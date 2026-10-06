@@ -16,6 +16,8 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Kaikki model-luokat perivät tämän
+
+####### TÄMÄ
 Base = declarative_base()
 
 
