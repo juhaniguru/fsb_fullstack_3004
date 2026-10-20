@@ -17,7 +17,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Kaikki model-luokat perivät tämän
 
-####### TÄMÄ
+# tämä on issuen korjaus
+# tämä on issuen korjaus
+# tämä on issuen korjaus
 Base = declarative_base()
 
 
