@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+
+
 load_dotenv()
 
 # postgresql+psycopg2://postgres:salasana@localhost:5435/lainaamo
@@ -17,9 +19,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Kaikki model-luokat perivät tämän
 
-# tämä on issuen korjaus
-# tämä on issuen korjaus
-# tämä on issuen korjaus
+
 Base = declarative_base()
 
 
