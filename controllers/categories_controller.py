@@ -14,6 +14,7 @@ CategoryServ = Annotated[ABCCategoryService, Depends(create_category_service)]
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 def create_category(_service: CategoryServ, req: CreateCategoryReq) -> CategoryDto:
+
     category = _service.create(req)
     return CategoryDto.model_validate(category)
 
