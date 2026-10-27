@@ -1,0 +1,18 @@
+
+name: CI
+
+
+on:
+  push:
+    branches:
+      - valmistelu/20261027
+  pull_request:
+    branches:
+      - valmistelu/20261027
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello World
+        run: echo "Hello World!"
