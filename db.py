@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-
-
 load_dotenv()
 
 # postgresql+psycopg2://postgres:salasana@localhost:5435/lainaamo
