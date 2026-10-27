@@ -14,7 +14,7 @@ import os
 
 from dotenv import load_dotenv
 
-import models
+import models # noqa: F401
 from db import Base
 
 load_dotenv()
