@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy import Integer, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -13,6 +13,8 @@ class Category(Base):
     # unique=True: kahta samannimistä kategoriaa ei ole järkeä olla
     name: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
 
+    items: Mapped[List['Item']] = relationship('Item', back_populates='category')
+
 
 class Item(Base):
     __tablename__ = 'items'
@@ -26,3 +28,17 @@ class Item(Base):
 
     # relationship EI ole sarake tietokannassa
     category: Mapped['Category'] = relationship('Category', back_populates='items')
+
+    copies: Mapped[List['ItemCopy']] = relationship('ItemCopy', back_populates='item')
+
+
+
+class ItemCopy(Base):
+    __tablename__ = 'item_copies'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    # Inventaariokoodi, esim. "CAM-001"
+    inventory_code: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
+
+    item_id: Mapped[int] = mapped_column(ForeignKey('items.id'), nullable=False)
+    item: Mapped['Item'] = relationship('Item', back_populates='copies')
