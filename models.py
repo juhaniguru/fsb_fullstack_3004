@@ -1,6 +1,5 @@
-from typing import Optional, List
 
-from sqlalchemy import Integer, Text, ForeignKey
+from sqlalchemy import ForeignKey, Integer, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db import Base
@@ -13,7 +12,7 @@ class Category(Base):
     # unique=True: kahta samannimistä kategoriaa ei ole järkeä olla
     name: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
 
-    items: Mapped[List['Item']] = relationship('Item', back_populates='category')
+    items: Mapped[list['Item']] = relationship('Item', back_populates='category')
 
 
 class Item(Base):
@@ -21,7 +20,7 @@ class Item(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(Text, nullable=False)
-    description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Viiteavain — tämä on oikeasti tietokannassa sarakkeena
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'), nullable=False)
@@ -29,7 +28,7 @@ class Item(Base):
     # relationship EI ole sarake tietokannassa
     category: Mapped['Category'] = relationship('Category', back_populates='items')
 
-    copies: Mapped[List['ItemCopy']] = relationship('ItemCopy', back_populates='item')
+    copies: Mapped[list['ItemCopy']] = relationship('ItemCopy', back_populates='item')
 
 
 
