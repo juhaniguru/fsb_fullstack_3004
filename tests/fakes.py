@@ -4,6 +4,31 @@ import models
 from dtos.categories import CreateCategoryReq
 from services.abc_categories_service import ABCCategoryService
 
+from services.abc_user_service import ABCUserService
+
+
+class FakeUserService(ABCUserService):
+    def __init__(self, user: models.User | None = None, raises: Exception | None = None):
+        self._user = user
+        self._raises = raises
+
+
+
+    def login(self, username: str, password: str) -> str:
+        if self._raises:
+            raise self._raises
+        return 'fake-token'
+
+    def get_user_by_access_token(self, access_token: str) -> models.User | None:
+        return self._user
+
+    def register(self, username: str, password: str) -> models.User | None:
+        if self._raises:
+            raise self._raises
+        return self._user
+
+    def get_user_by_username(self, username: str) -> models.User | None:
+        return self._user
 
 class FakeCategoryService(ABCCategoryService):
     # Konstruktorin kautta säädetään, miten fake käyttäytyy.
