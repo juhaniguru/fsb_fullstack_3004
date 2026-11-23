@@ -4,6 +4,7 @@ import uuid
 
 import jwt
 from argon2 import PasswordHasher
+from argon2.exceptions import InvalidHashError, VerifyMismatchError
 from sqlalchemy.orm import Session
 
 import models
@@ -11,13 +12,13 @@ from custom_exceptions.conflict_exception import ConflictException
 from custom_exceptions.unauthorized_exception import UnauthorizedException
 from services.abc_user_service import ABCUserService
 
-ph = PasswordHasher()
+
 
 class UserService(ABCUserService):
 
     def __init__(self, _repository: Session):
         self._repository = _repository
-        self.ph = ph
+        self.ph = PasswordHasher()
 
 
 
@@ -30,7 +31,12 @@ class UserService(ABCUserService):
 
         # argon2.verify lukee tallennetusta merkkijonosta saltin ja parametrit,
         # laskee niillä hashin annetusta salasanasta ja vertaa vakioaikaisesti
-        if not self.ph.verify(password, user.hashed_password):
+        # HUOM: argumenttien järjestys on verify(hash, password).
+        # verify ei palauta False:a, vaan heittää VerifyMismatchErrorin,
+        # jos salasana ei täsmää (InvalidHashError, jos hash on rikki).
+        try:
+            self.ph.verify(user.hashed_password, password)
+        except (VerifyMismatchError, InvalidHashError):
             raise UnauthorizedException('username or password incorrect')
 
         token_key = os.getenv('TOKEN_KEY')

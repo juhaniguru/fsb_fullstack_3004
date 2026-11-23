@@ -4,6 +4,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 
 import dtos.register
+import models
+from dependencies import get_logged_in_user
 from dtos import  register, login
 from custom_exceptions.conflict_exception import ConflictException
 from custom_exceptions.unauthorized_exception import UnauthorizedException
@@ -30,6 +32,11 @@ def login(request_data: login.LoginReq,
           _user_service: UserServ) -> login.LoginRes:
     try:
         token = _user_service.login(request_data.username, request_data.password)
-        return login.LoginRes(token=token)
+        return dtos.login.LoginRes(token=token)
     except UnauthorizedException as error:
         raise HTTPException(status_code=401, detail=str(error))
+
+
+@router.get('/')
+def get_all_users(current_user: models.User = Depends(get_logged_in_user)):
+    return {'id': current_user.id, 'username': current_user.username}
