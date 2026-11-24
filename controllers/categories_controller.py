@@ -32,7 +32,7 @@ def get_by_id(category_id: int, _service: CategoryServ) -> dtos.categories.Categ
 def create(req: dtos.categories.CreateCategoryReq,
            _service: CategoryServ) -> dtos.categories.CategoryDto:
     return dtos.categories.CategoryDto.model_validate(_service.create(req))
-
+    # return _service.create(req)
 
 @router.put('/{category_id}')
 def update(category_id: int, req: dtos.categories.CreateCategoryReq,

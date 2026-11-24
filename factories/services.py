@@ -11,3 +11,10 @@ OpenSASession = Annotated[Session, Depends(get_db)]
 
 def create_category_service(_repository: OpenSASession) -> CategoryService:
     return CategoryService(_repository)
+
+
+from services.user_service import UserService
+
+
+def user_service_factory(repository: OpenSASession) -> UserService:
+    return UserService(repository)
